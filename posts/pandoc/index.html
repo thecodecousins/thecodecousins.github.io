@@ -1,0 +1,158 @@
+<!doctype html><html lang=en><head><title>How I escaped from Microsoft Office tools as a Computer Science student :: thecodecousins — Anything that&#39;s software</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta name=description content="The Easiest Way to Make Presentations! (Pandoc &#43; Markdown)"><meta name=keywords content=pandoc><meta name=robots content=noodp><link rel=canonical href=/posts/pandoc/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/assets/green.css><link rel=stylesheet href=/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=/favicon.ico><meta name=twitter:card content=summary><meta name=twitter:title content="How I escaped from Microsoft Office tools as a Computer Science student :: thecodecousins — Anything that's software"><meta name=twitter:description content="The Easiest Way to Make Presentations! (Pandoc &#43; Markdown)"><meta name=twitter:site content=/><meta name=twitter:creator content><meta name=twitter:image content=/posts/pandoc/images/the-powerpoint-was.jpg><meta property=og:locale content=en><meta property=og:type content=article><meta property=og:title content="How I escaped from Microsoft Office tools as a Computer Science student :: thecodecousins — Anything that's software"><meta property=og:description content="The Easiest Way to Make Presentations! (Pandoc &#43; Markdown)"><meta property=og:url content=/posts/pandoc/><meta property=og:site_name content="How I escaped from Microsoft Office tools as a Computer Science student"><meta property=og:image content=/posts/pandoc/images/the-powerpoint-was.jpg><meta property=og:image:width content=2048><meta property=og:image:height content=1024><meta property=article:published_time content="2019-10-09 00:35:20 &#43;0700 &#43;0700"><link href=/prism-onedark.css rel=stylesheet></head><body class=en><div class=container><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>thecodecousins</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>about</a></li><li><a href=/contribute>contribute</a></li><div class=spacer></div><ul class=language-selector><ul class=language-selector-current><li>english ▾</li></ul><ul class="language-selector__more hidden"><li><a href=/>english</a></li><li><a href=/vi/>viet</a></li></ul></ul></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>about</a></li><li><a href=/contribute>contribute</a></li><hr><li><a href=/>english</a></li><li><a href=/vi/>viet</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=/posts/pandoc/>How I escaped from Microsoft Office tools as a Computer Science student</a></h1><div class=post-meta><span class=post-date>2019-10-09</span>
+<span class=post-author>::
+<a href=/authors/kn/>Do Hoang</a></span></div><span class=post-tags><a href=/tags/pandoc/>#pandoc</a>&nbsp;
+<a href=/tags/presentation/>#presentation</a>&nbsp;
+<a href=/tags/blog/>#blog</a>&nbsp;</span>
+<img src=/posts/pandoc/images/the-powerpoint-was.jpg class=post-cover><div class=post-content><h2 id=motivation>Motivation</h2><p><img src=/posts/pandoc/images/mdVSw.png alt="Pandoc Markdow presentation VS Microsoft Powerpoint"></p><p>I have used beamer quite a lot to prepare slides for both research and class presentations.
+I have started to use LaTeX to content in beamer presentation for two years.
+Sometimes I was concerned about the high ratio of markup to content in beamer presentations.
+I used to type thousands lines of code just to create a presentation slide which was tiring and time consuming.
+Thus, I did some research and found a combination of pandoc, markdown, and LaTeX to simplify my process.
+In my point of view, markdown in syntax is straightforward, easy to read and modify.
+Moreover, pandoc has the ability to convert markdown files into LaTeX, hence enabled me to customise my slides greatly later on.</br></p><p>In this blog, I want to discuss about the creation of beamer presentations using a combination of <em>markdown, pandoc, and LaTeX</em>.
+This workflow offers the potential to reduce typing and increase readability of beamer presentation source code.
+After reading this blog, you would be able to create a slide by using both Markdown and LaTeX and without having to rely on Powerpoint.</p><h2 id=why-pandoc-for-presentation>Why Pandoc For Presentation?</h2><p><strong>Presentation shouldn’t get in the way of content.</strong></p><ul><li><p>With a word processor, you spend valuable time agonizing over
+what font size to make the section headings.</p><p>&rarr; With <em>Pandoc</em>, you just tell it to start a new section.</p></li><li><p>With a word processor, changing the formatting means you have to
+change each instance individually.</p><p>&rarr; With <em>Pandoc</em>, you just redefine the relevant commands</p></li><li><p>With a word processor, you have to carefully match any provided
+templates.</p><p>&rarr; With <em>Pandoc</em>, you can be sure you’ve fit the template, and switch
+templates easily.</p></li><li><p>Lower ratio of markup to content in beamer presentations comparing to LaTeX.</p></li><li><p>Beautiful.</p></li><li><p>Pretty Math Equation - From my point of view as a researcher.</p></li></ul><h2 id=installation-guide>Installation Guide</h2><p><strong>Integrated Software</strong></p><p>Thus we want to make our slide looks like <em>LaTeX</em> typesets so a Basic LaTeX package is required.<br>I strongly recommend not just installing the TeX compiler, but <em>all</em> TeX packages for your own convenience, so you have everything available offline.</p><p><strong>On GNU/Linux:</strong></p><p>On Debian-based distros (Ubuntu/Linux Mint):</p><pre><code class=language-bash>sudo apt-get install texlive-full
+</code></pre><p>For Arch-based distros (Manjaro, Parabola, Antergos):</p><pre><code class=language-bash>sudo pacman -S texlive-most texlive-lang
+</code></pre><p><strong>On Windows</strong></p><p>Download and install the packages <em><a href=https://miktex.org/download/#collapse264>here</a></em>.</p><p><strong>On MacOS</strong></p><p>Download and install the packages <em><a href=https://tug.org/mactex/>here</a></em>. Or via Brew:</p><pre><code class=language-bash>brew cask install mactex
+</code></pre><p>After installing LaTeX, the next step is to get Pandoc - a universal document converter.</p><p><strong>On GNU/Linux</strong></p><p>For each linux distribution, you might have a different pandoc package&rsquo;s name in your package manager.
+For example in ArchLinux, we can install pandoc with:</p><pre><code class=language-bash>sudo pacman -S pandoc
+</code></pre><p>But if you want to get the latest version ( you might want to check whether the pandoc version in your package manager is not outdated ), we can get the binary package for amd64 architecture on the <em><a href=https://github.com/jgm/pandoc/releases/tag/2.7.3>download page</a></em>.</p><p><strong>On MacOS</strong></p><pre><code class=language-bash>brew install pandoc
+</code></pre><p><strong>On Windows</strong></p><p>You can get the latest version on the <em><a href=https://github.com/jgm/pandoc/releases/tag/2.7.3>dowload page</a></em>.</p><h2 id=getting-started>Getting started</h2><p><img src=/posts/pandoc/images/markdown-markdown-everywhere.jpg alt="Markdown everywhere"></p><p>We are computer scientists 😍😍😍, as I mentioned before, making an academic presentation without having to write LaTeX ( with tons of syntax,&hellip; ) is our main goal.
+Pandoc provides us a way to convert between numerous markups and word processing formats, including, but not limited to, various flavors of Markdown, Latex, HTML.</p><p>To create a slide shows with Pandoc is quite simple because the basic syntax is Markdown which is a familiar language with all developers or computer scientist.</p><p>Let&rsquo;s create some slide with Pandoc !!! 🎉🎉🎉</p><p>Create a <code>main.md</code> file that contains:</p><pre><code class=language-markdown># Section heading 1 slide
+## Slide 1 of Section 1 
+- This is a list 
+- Another list item
+- etc,...
+
+![Image example](testImage.png)
+
+# Section heading 2
+...
+</code></pre><p>Once you have pandoc and latex (with packages to run beamer) installed, you just have to use the following command to compile the presentation:</p><pre><code class=language-bash>pandoc main.md -t beamer -o output.pdf
+</code></pre><p><img src=/posts/pandoc/images/compileFlow.png alt="Compile Flow"></p><p>Pandoc converted <em>main.md</em> into a beamer latex file main.tex and after that they use the default way (<code>pdflatex</code>) to transfer beamer <code>*.tex</code> to a Presentation file.
+By default, pandoc will use <code>slide-level=2</code>, it means that level 1 markdown headings represents section headings - as the picture below ( line preceded with a single hash <code># Section heading 2</code>).
+And Level 2 headings represented a new slide with the title name. ( line preceded with double hash <code>## Slide 1 of Section 1</code>). So that the headings above the defined number in the hierarchy are used to divide the slide show into sections; the headings below the defined number create subheads within a slide. You might want to read more about <a href=https://pandoc.org/MANUAL.html#structuring-the-slide-show>Structuring the slide show.</a></p><p><strong>Code explaination</strong></p><ul><li>The first line adds a section title. This is not part of the slide, but can be used to generate table of contents, and in-slide navigation.</li><li>The second line creates a new slide with the slide title.</li><li>To create a <code>itemize</code> as LaTeX, we can use the same method in markdown.</li><li>Also we can use the same method in markdow to create a figure, table inside a slide.</li></ul><p><strong>Result</strong></p><p><img src=/posts/pandoc/images/result1.png alt="Result Example"></p><p><strong>Code comparation with LaTeX</strong></p><pre><code class=language-latex>\documentclass[t]{beamer}  
+\setbeamertemplate{navigation symbols}{}
+\begin{document}
+\section{Section heading 1 slide}
+\begin{frame}
+\frametitle{Slide 1 of Section 1}
+\begin{itemize}
+  \item {
+   	This is a list 
+  }
+  \item {
+  	Another list item
+  }
+  \item{
+  	etc,...
+  }
+\end{itemize}
+\begin{figure}
+  \includegraphics{testImage.png}
+\end{figure}
+\end{frame}
+\section{Section 2}
+\end{document}
+</code></pre><p>&rarr; Markdown is muchhhhhhhhh shorter line of code comparing to LaTeX with the same content.</p><h2 id=advanced-configuration>Advanced configuration</h2><h4 id=yaml>YAML</h4><p>You might want a slide containing a Beamer&rsquo;s theme, an author name, a presentation name,&hellip; - all of LaTex beamer&rsquo;s feature but written in markdown.
+To deal with that, we can add some YAML configuration at the beginning of the markdown file.<br>Fill in all the necessary fields:</p><ul><li><code>title</code>: the presentation&rsquo;s name.</li><li><code>author</code>: your name.</li><li><code>date</code></li><li><code>institute</code></li><li><code>theme</code>: Beamer theme, you can chose one at <a href=https://hartwork.org/beamer-theme-matrix/>this site</a></li><li><code>colortheme</code>: theme colorscheme</li><li><code>mainfont</code></li><li><code>toc</code>: table of content slide ( use <code>true</code> to enable this slide)</li></ul><p><strong>YAML example</strong></p><pre><code class=language-YAML>---
+title: &quot;Pandoc Tutorial&quot;
+author: Do Duy Huy Hoang 
+date: \today{}
+institute: 
+- The Code Cousins
+theme:
+- Ilmenau
+colortheme:
+- beaver 
+mainfont: &quot;SourceSansPro-Regular&quot;
+toc:
+- true
+---
+</code></pre><p><strong>Result</strong></p><pre><code>🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉
+</code></pre><p><img src=/posts/pandoc/images/yamlResult1.png alt="Result with YAML header 1"> <img src=/posts/pandoc/images/yamlResult2.png alt="Result with YAML header 2"></p><h4 id=tips-and-tricks>Tips and Tricks</h4><p><strong>Image Scalling</strong></p><p>The width and height attributes on images are treated specially.
+When used without a unit, the unit is assumed to be pixels.
+However, any of the following unit identifiers can be used: px, cm, mm, in, inch and %.
+There must not be any spaces between the number and the unit.</p><p>For example:</p><pre><code class=language-markdown>![caption](file.jpg){ width=50% }
+</code></pre><p>Equal to LaTeX</p><pre><code class=language-latex>\includegraphics[width=0.5\textwidth,height=\textheight]{file.jpg}
+</code></pre><p>When no width or height attributes are specified, the fallback is to look at the image resolution and the dpi metadata embedded in the image file.</p><p><strong>Slides with Columns in Pandoc</strong>
+Current version of pandoc (i.e., pandoc 2.0 and later) supports <a href=https://pandoc.org/MANUAL.html#fenced-divs>fenced divs</a>.
+Specially named divs are transformed into columns when targeting a slides format:</p><pre><code class=language-markdown># This slide has columns
+
+::: columns
+
+:::: column
+left
+::::
+
+:::: column
+right
+::::
+
+:::
+</code></pre><p>But I found that it is quite buggy and you hard to control the width of each column easily.
+Thus We can use both Markdown and LaTeX code inside our main file.
+To create a slide that has columns, I recommend to use raw LaTeX code as the following code below:</p><pre><code class=language-latex>\Begin{columns}
+
+\Begin{column}{0.5\textwidth}
+- Some content here
+\End{column}
+
+\Begin{column}{0.5\textwidth}
+![caption](image.png)
+\End{column}
+
+\End{columns}
+</code></pre><p>But you need to add this code to your YAML file ( I will explain what is this code in the next section)</p><pre><code class=language-YAML>header-includes:
+- \newcommand{\hideFromPandoc}[1]{#1}
+- \hideFromPandoc{
+    \let\Begin\begin
+    \let\End\end
+  }
+</code></pre><p><strong>Magical things</strong> is that you can also use Markdown inside a Raw LaTeX code \m/</p><p>And this is the result:</p><p><img src=/posts/pandoc/images/column.png alt=caption></p><h4 id=preamble>Preamble</h4><p>Pandoc lets user include a custom preamble in the generated output.</p><p>If you have to use some packages in LaTeX ( not so much ), you can include it in the YAML header inside the <code>header-includes:</code> tag.<br>For example I want to use package <code>multicol</code> in LaTeX, my header should look like:</p><pre><code class=language-YAML>header-includes:
+- \usepackage{multicol}
+</code></pre><p>These lines will be included before the document begin in LaTeX file.</p><p>Preamble in Pandoc gives you more features than just to import some packages.
+We can also create our own PDF template. For presentation, we can re-config the Beamer theme.
+For example, as the previous example above, I used Ilmenau theme for my slide.
+By default, It does not have slide numbers ( frame number ).
+So our goal now is to re-config the theme without changing the theme source code.
+If you are using LaTeX then it quite easy to deal with that.
+Either does Pandoc, instead of using <code>header-includes</code> tag, we can create a new file called <code>preamble.tex</code> - you can put all the configuration in LaTeX to this file the same way you use LaTeX to create a beamer presentation.</p><p>For example, I want to add the frame number to Ilmenau theme.
+I need to redefine the <code>footline</code> template used by the Ilmenau, and also modify the <code>sections/subsections</code> in toc allowing you to change the appearance of the sections and subsections in the ToC.
+At this point, you do need to know a little bit about LaTeX, but you will have your own Beamer Template.
+You can also change the color, subsection, section,&hellip;</p><pre><code class=language-latex>%%%% Create framenumber in footer
+\newcommand{\frameofframes}{/}
+\newcommand{\setframeofframes}[1]{\renewcommand{\frameofframes}{#1}}
+
+\setframeofframes{of}
+\makeatletter
+\setbeamertemplate{footline}
+  {%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+      leftskip=.3cm,rightskip=.3cm plus1fil]{author in head/foot}%
+      \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%
+      \hfill%
+      {\usebeamerfont{institute in head/foot}\usebeamercolor[fg]{institute in head/foot}\insertshortinstitute}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+      leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+      {\usebeamerfont{title in head/foot}\insertshorttitle}%
+      \hfill%
+      {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}\insertframenumber~\frameofframes~\inserttotalframenumber}
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}  
+    \end{beamercolorbox}
+  }
+</code></pre><p><strong>Usage</strong></p><pre><code class=language-bash>pandoc main.md -H preamble.tex -t beamer -o main.pdf
+</code></pre><p><strong>Result</strong><br>Ilmenau theme with frame number and a new look.
+You can download my preamble example <a href=https://github.com/huyhoang8398/pandoc-tutorial/blob/master/preamble.tex>here</a></p><p><img src=/posts/pandoc/images/preambleExample.png alt="Custom Ilmenau theme"></p><h2 id=source-code>Source code</h2><p>You can download all the source code in this blog in this <a href=https://github.com/huyhoang8398/pandoc-tutorial/>site</a></p><h2 id=reference>Reference</h2></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=/posts/dns-command/><span class=button__icon>←</span>
+<span class=button__text>Quick terminal-based DNS switching</span></a></span>
+<span class="button next"><a href=/posts/example/><span class=button__text>Example Blog Post</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2020 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=/assets/main.js></script><script src=/assets/prism.js></script></div></body></html>

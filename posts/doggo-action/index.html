@@ -1,0 +1,110 @@
+<!doctype html><html lang=en><head><title>Building my Github Action to deliver doggoes to PRs :: thecodecousins — Anything that&#39;s software</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta name=description content="Because who doesn't want good boys to show up whenever they push?"><meta name=keywords content="dog,doggo,doge,github,actions,continuous delivery"><meta name=robots content=noodp><link rel=canonical href=/posts/doggo-action/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/assets/green.css><link rel=stylesheet href=/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=/favicon.ico><meta name=twitter:card content=summary><meta name=twitter:title content="Building my Github Action to deliver doggoes to PRs :: thecodecousins — Anything that's software"><meta name=twitter:description content="Because who doesn't want good boys to show up whenever they push?"><meta name=twitter:site content=/><meta name=twitter:creator content><meta name=twitter:image content=/posts/doggo-action/images/dog.gif><meta property=og:locale content=en><meta property=og:type content=article><meta property=og:title content="Building my Github Action to deliver doggoes to PRs :: thecodecousins — Anything that's software"><meta property=og:description content="Because who doesn't want good boys to show up whenever they push?"><meta property=og:url content=/posts/doggo-action/><meta property=og:site_name content="Building my Github Action to deliver doggoes to PRs"><meta property=og:image content=/posts/doggo-action/images/dog.gif><meta property=og:image:width content=2048><meta property=og:image:height content=1024><meta property=article:published_time content="2020-03-07 16:08:42.903 &#43;0000 UTC"><link href=/prism-onedark.css rel=stylesheet></head><body class=en><div class=container><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>thecodecousins</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>about</a></li><li><a href=/contribute>contribute</a></li><div class=spacer></div><ul class=language-selector><ul class=language-selector-current><li>english ▾</li></ul><ul class="language-selector__more hidden"><li><a href=/>english</a></li><li><a href=/vi/>viet</a></li></ul></ul></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>about</a></li><li><a href=/contribute>contribute</a></li><hr><li><a href=/>english</a></li><li><a href=/vi/>viet</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=/posts/doggo-action/>Building my Github Action to deliver doggoes to PRs</a></h1><div class=post-meta><span class=post-date>2020-03-07</span>
+<span class=post-author>::
+<a href=/authors/stanleynguyen/>Stanley Nguyen</a></span></div><span class=post-tags><a href=/tags/doggo/>#doggo</a>&nbsp;
+<a href=/tags/dog/>#dog</a>&nbsp;
+<a href=/tags/doge/>#doge</a>&nbsp;
+<a href=/tags/github/>#Github</a>&nbsp;
+<a href=/tags/action/>#action</a>&nbsp;
+<a href=/tags/continuous-delivery/>#continuous delivery</a>&nbsp;
+<a href=/tags/software/>#software</a>&nbsp;
+<a href=/tags/devops/>#devops</a>&nbsp;</span>
+<img src=/posts/doggo-action/images/dog.gif class=post-cover><div class=post-content><p>The long awaited GitHub Action feature is finally out of beta and ready to be present
+in every repositories. GitHub even organized <a href=https://githubhackathon.com>a Hackathon</a>
+through out March to encourage folks to create more awesome and useful actions.
+While browsing through the submissions, I found <a href=https://github.com/ruairidhwm/action-cats>a cool GitHub Action</a>
+that posts cat gifs on pull requests. Shout out to <a href=https://ruairidh.dev>Ruairidh</a> with his cool
+idea 👏👏👏.</p><p>It&rsquo;ll only do justice to dogs if there&rsquo;s an action that deliver them
+good boys to our PRs. That moment I knew exactly what my next Github Action project would be. Time to get to work.</p><p><img src=/posts/doggo-action/images/get2work.gif alt="Doggo get to work"></p><h3 id=the-gist-of-creating-a-github-action>The gist of creating a GitHub Action</h3><p><a href=https://help.github.com/en/actions/getting-started-with-github-actions/about-github-actions>GitHub actions</a>
+are basically premade (with ❤️) units of work to be used GitHub workflows (think <a href=https://travis-ci.org/>Travis</a>&rsquo;s builds).
+Github actions can be either built with <a href=https://help.github.com/en/actions/building-actions/creating-a-docker-container-action>Docker containers</a>
+or <a href=https://help.github.com/en/actions/building-actions/creating-a-javascript-action>JS/TS scripts</a>.
+An advantage to creating a GitHub action with JS/TS is readily available modules
+from <a href=https://github.com/actions/toolkit>GitHub toolkit</a>. With such integration
+support, it&rsquo;s much easier to connect with GitHub services (C&rsquo;mon 🙄 Who wanna write
+<code>curl</code> commands to make API calls). It&rsquo;s obvious to go with <a href=https://github.com/actions/typescript-action>TypeScript action template</a>.</p><p>With that decision made, let&rsquo;s get down to writing <a href=https://github.com/stanleynguyen/action-dogs>action-dogs</a>.</p><h3 id=the-main-run-file>The main run file</h3><p>In a JS/TS GitHub action, workload will be started out from a main entrypoint (think
+running <code>node src/index.js</code> to start a Node process for web applications, etc).
+For action-dogs, this is my basic setup for the main program</p><pre><code class=language-typescript>import * as core from &quot;@actions/core&quot;;
+import * as github from &quot;@actions/github&quot;;
+import { generate } from &quot;./doggo/generator&quot;;
+
+(async function run(): Promise&lt;void&gt; {
+  try {
+    const ctx = github.context;
+    if (!ctx.payload.pull_request) {
+      throw new Error(&quot;Not in the context of a PR!&quot;);
+    }
+
+    const ghCli = new github.GitHub(core.getInput(&quot;github-token&quot;));
+    const doggo = generate();
+    ghCli.issues.createComment({
+      ...ctx.repo,
+      issue_number: ctx.payload.pull_request.number,
+      body: `![Doggo](${doggo})`
+    });
+  } catch (e) {
+    core.setFailed(e.message);
+  }
+})();
+</code></pre><p>During an event that can trigger GitHub workflows, we are provided with a context
+object that can be accessed through <code>@actions/github</code> module. Using that, I&rsquo;m able
+to check whether my payload is coming from a <code>pull_request</code> and reject otherwise.
+Next up, I need to post a comment to the corresponding pull request with content
+of a doggo gif. Given that my doggo generator (of which I will explain in the
+next section) works properly, I can retrieve an URL of a doggo gif, creating a
+comment on pull requests is super simple as I just need to pass in the repo&rsquo;s information
+from our context object and the PR&rsquo;s number. Also, in case we get any errors during
+these operations, calling <code>core.setFailed(e.message)</code> will mark the build as failed
+with the error message.</p><h3 id=the-doggo-generator>The doggo generator</h3><p>After much research with the intention to use one of the public APIs to get random
+doggo gifs, I couldn&rsquo;t find one that&rsquo;s public (like <a href=https://dog.ceo>dog.ceo</a>)
+and also serves gifs (like <a href=https://giphy.com>GIPHY</a>). Since there&rsquo;s no avenue
+for me to store my GIPHY API key securely to be used in action-dogs, I fell back
+to the good-ol-way of static JSON array.</p><p>Wanna know how I obtained my array full of doggo awesomeness (from ❤️ <a href=https://giphy.com>GIPHY</a> ❤️) without any API key generated in the process?
+I actually went to GIPHY site, searched for doggoes, and scrolled down util a good
+amount of &ldquo;giffy-boys&rdquo; generated before pulling up my console</p><p><img src=/posts/doggo-action/images/inspect.png alt="Inspect GIPHY"></p><p>And with these few lines of JS</p><pre><code class=language-js>const dogsData = [];
+document
+  .querySelectorAll(&quot;a._2SwDiFPqIlZmUDkxHNOeqU&quot;)
+  .forEach(e =&gt; dogsData.push(e.href));
+var dataStr =
+  &quot;data:text/json;charset=utf-8,&quot; +
+  encodeURIComponent(JSON.stringify(dogsData));
+var dlAnchorElem = document.createElement(&quot;a&quot;);
+dlAnchorElem.setAttribute(&quot;href&quot;, dataStr);
+dlAnchorElem.setAttribute(&quot;download&quot;, &quot;dogs.json&quot;);
+dlAnchorElem.click();
+</code></pre><p>which basically grab <code>href</code> values from all &ldquo;copy link&rdquo; elements on the search
+results page, stream them to a JSON array and fill in a file for me to &ldquo;download&rdquo;, &ldquo;generating&rdquo; is simply picking a random URL from the array.</p><pre><code class=language-typescript>import dogs from &quot;./dogs.json&quot;;
+
+export function generate(): string {
+  return dogs[Math.floor(Math.random() * dogs.length)];
+}
+</code></pre><h3 id=testing>Testing</h3><p>I wrote a unit test for my doggo generator using jest (but actually mainly as an avenue for
+funny descriptions).</p><pre><code class=language-ts>import { generate } from &quot;../../src/doggo/generator&quot;;
+
+describe(&quot;doggo generator&quot;, () =&gt; {
+  test(&quot;to return a good boy&quot;, () =&gt; {
+    Math.random = jest.fn().mockReturnValue(0);
+    const good = &quot;https://media3.giphy.com/media/mCRJDo24UvJMA/giphy.gif&quot;;
+    const boy = generate();
+    expect(boy).toBe(good);
+  });
+});
+</code></pre><p>But the real test is a workflow using <code>action-dogs</code> itself (Yes, you can use
+a GitHub action on its own repo 🤯).</p><pre><code class=language-yaml>name: &quot;doggo&quot;
+
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: stanleynguyen/action-dogs@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+</code></pre><p>Now I can see <code>action-dogs</code> in action with <a href=https://github.com/stanleynguyen/action-dogs/pull/1>a sample PR</a>. Hurray 🙌🙌🙌!! Now I can safely <a href=https://help.github.com/en/actions/building-actions/publishing-actions-in-github-marketplace>publish it on GitHub Marketplace</a>.</p><h3 id=outtro>Outtro</h3><p>So that&rsquo;s my story of creating <code>action-dogs</code> for fun and learning. You can find
+source code right on <a href=https://github.com/stanleynguyen/action-dogs>GitHub</a> (well,
+cos where else could it be 🤷‍♂️) and <code>action-dogs</code> on <a href=https://github.com/marketplace/actions/action-dogs>Marketplace</a>.</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=/posts/using-arduino-with-pharo/><span class=button__icon>←</span>
+<span class=button__text>Using Arduino With PharoThings/Smalltalk</span></a></span>
+<span class="button next"><a href=/posts/git-revert-to-a-good-commit/><span class=button__text>Git Revert to a Good Commit</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2020 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=/assets/main.js></script><script src=/assets/prism.js></script></div></body></html>

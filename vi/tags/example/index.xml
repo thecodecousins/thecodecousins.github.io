@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>example on thecodecousins</title><link>/vi/tags/example/</link><description>Recent content in example on thecodecousins</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 03 Mar 2017 14:15:59 -0600</lastBuildDate><atom:link href="/vi/tags/example/index.xml" rel="self" type="application/rss+xml"/><item><title>Bài viết ví dụ</title><link>/vi/posts/example/</link><pubDate>Fri, 03 Mar 2017 14:15:59 -0600</pubDate><guid>/vi/posts/example/</guid><description>Phần 1 Một đoạn văn cho có
+Mục nhỏ 1 Một đoạn văn cho có cho mục nhỏ 1
+Thử code highlight Code Go dùng hệ thống highlight của hugo
+a := &amp;#34;some string&amp;#34; fmt.Println(&amp;#34;lol&amp;#34;) Code Go dùng 3 backticks
+a := &amp;quot;some string&amp;quot; fmt.Println(&amp;quot;lol&amp;quot;) Code JS dùng hệ thống highlight của hugo
+const a = &amp;#34;some string&amp;#34; console.log(&amp;#34;lol&amp;#34;) const b = () =&amp;gt; { return 1; }; Code JS dùng 3 backticks</description></item></channel></rss>
